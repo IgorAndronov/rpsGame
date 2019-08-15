@@ -15,14 +15,14 @@ import java.util.Optional;
 import static com.interview.task.rps.domain.GameConstants.GAME_DEFINITIONS;
 
 @RestController
-@RequestMapping("/api/games/rps")
+@RequestMapping("/api/rps")
 @Slf4j
 public class RpsGameController {
 
     @Autowired
     RpsGameService rpsGameService;
 
-    @GetMapping("/for/{userId}")
+    @GetMapping("/users/{userId}")
     public RpsGameMovementResponse allProducts(@PathVariable String userId) {
         Character result = rpsGameService.getNextMove(userId);
 
