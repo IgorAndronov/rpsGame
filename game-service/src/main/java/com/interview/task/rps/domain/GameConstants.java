@@ -10,6 +10,10 @@ public class GameConstants {
 
     public static final char NOT_FOUND = 'N';
 
+    public static final String DRAW = "E";
+    public static final String USER_WON = "U";
+    public static final String SERVER_WON = "S";
+
     public static final Map<Character,Character> WIN_COMBINATIONS = new HashMap<Character,Character>(){{
         put(STONE, PAPER);
         put(PAPER, SCISSORS);

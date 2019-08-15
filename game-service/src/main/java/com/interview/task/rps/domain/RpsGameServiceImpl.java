@@ -23,6 +23,8 @@ public class RpsGameServiceImpl implements RpsGameService {
     public static final int MAX_AMOUNT_OF_STEPS_TO_UNALIZE = 15;
     public static final double PROBABILITY_THRESHOLD = 0.4;
 
+
+
     @Autowired
     RpsGameRepository rpsGameRepository;
 
@@ -35,19 +37,39 @@ public class RpsGameServiceImpl implements RpsGameService {
 
     @Override
     public void saveGameResults(String userId, String userGameMovement, String serverGameMovement){
-        Optional<Map.Entry<Character, String>> gameMovement = GAME_DEFINITIONS.entrySet().stream()
-                .filter(item -> item.getValue().equalsIgnoreCase(userGameMovement)).findAny();
-
-        if(!gameMovement.isPresent()){
-            log.error(userGameMovement + " is not allowed game movement");
-            throw new UnknownGameMovement(userGameMovement + " is not allowed game movement");
-        }
+        Character userGameMovementCode = getMovementCode(userGameMovement);
+        Character serverGameMovementCode = getMovementCode(serverGameMovement);
 
         RpsResults.RpsResultsKey rpsResultsKey = new RpsResults.RpsResultsKey(userId, LocalDateTime.now());
-        RpsResults rpsResults = new RpsResults(rpsResultsKey,userGameMovement,"qwe","sdf");
+        RpsResults rpsResults = new RpsResults(rpsResultsKey, userGameMovement, serverGameMovement, getWinner(userGameMovementCode, serverGameMovementCode));
 
         rpsGameRepository.save(rpsResults);
     }
+
+    private Character getMovementCode(String gameMovement) {
+        Optional<Map.Entry<Character, String>> gameMovementData = GAME_DEFINITIONS.entrySet().stream()
+                .filter(item -> item.getValue().equalsIgnoreCase(gameMovement)).findAny();
+
+        if(!gameMovementData.isPresent()){
+            log.error(gameMovement + " is not allowed game movement");
+            throw new UnknownGameMovement(gameMovement + " is not allowed game movement");
+        }
+
+        return gameMovementData.get().getKey();
+    }
+
+    private String getWinner(Character userGameMovement, Character serverGameMovement) {
+
+        if(userGameMovement.equals(serverGameMovement)){
+            return DRAW;
+        };
+        if(serverGameMovement.equals(WIN_COMBINATIONS.get(userGameMovement))){
+            return SERVER_WON;
+        };
+
+        return USER_WON;
+    }
+
 
     private Character getStepValue(List<String> data){
 

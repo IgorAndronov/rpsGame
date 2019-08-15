@@ -73,6 +73,20 @@ docker exec -ti cas1 nodetool status
 7. start RpsStatsApplication 
       ./statistics-service>mvn spring-boot:run       
 
+##Use
+Use the following links that are proxied via zuul gateway:
+game-service:
+ GET http://localhost:8080/api/games/rps/users/{userId}
+ POST http://localhost:8080/api/games/rps/results
+    { "userId": "123",
+      "userGameMovement": "stone",
+      "serverGameMovement": ""
+    }
+
+statistics-service:
+ GET http://localhost:8080/api/statistics/games/rps/users/{userId}/limits/{limit}
+
+
 Monitor services:
 http://localhost:8761/  
             

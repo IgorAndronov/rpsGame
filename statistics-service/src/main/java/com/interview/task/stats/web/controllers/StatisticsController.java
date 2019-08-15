@@ -23,7 +23,7 @@ public class StatisticsController {
 
 
     @GetMapping("/users/{userId}/limits/{limit}")
-    public List<RpsResults> allProducts(@PathVariable String userId, int limit ) {
+    public List<RpsResults> allProducts(@PathVariable String userId, @PathVariable int limit ) {
 
         return rpsGameRepository.findByKeyUserIdLimitedTo(userId, limit);
     }
