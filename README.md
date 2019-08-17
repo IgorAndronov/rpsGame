@@ -75,19 +75,19 @@ docker exec -ti cas1 nodetool status
 
 ##Use
 Use the following links that are proxied via zuul gateway:
-game-service:
- GET http://localhost:8080/api/games/rps/users/{userId}
- POST http://localhost:8080/api/games/rps/results
+####game-service:
+ GET http://localhost:8080/api/games/rps/users/{userId}  - receive next server "Game movement"
+ POST http://localhost:8080/api/games/rps/results  -save game results
     { "userId": "123",
       "userGameMovement": "stone",
-      "serverGameMovement": ""
+      "serverGameMovement": "paper"
     }
 
-statistics-service:
+####statistics-service:
  GET http://localhost:8080/api/statistics/games/rps/users/{userId}/limits/{limit}
 
 
-Monitor services:
+####Monitor services:
 http://localhost:8761/  
             
 

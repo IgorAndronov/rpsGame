@@ -24,7 +24,7 @@ public class StatisticsController {
 
     @GetMapping("/users/{userId}/limits/{limit}")
     public List<RpsResults> allProducts(@PathVariable String userId, @PathVariable int limit ) {
-
+        log.info("Get request received: userID= "+userId + " limit= "+limit);
         return rpsGameRepository.findByKeyUserIdLimitedTo(userId, limit);
     }
 

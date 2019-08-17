@@ -23,7 +23,8 @@ public class RpsGameController {
     RpsGameService rpsGameService;
 
     @GetMapping("/users/{userId}")
-    public RpsGameMovementResponse allProducts(@PathVariable String userId) {
+    public RpsGameMovementResponse getNextMovement(@PathVariable String userId) {
+        log.info("Get request received: method=getNextMovement, userID= "+userId);
         Character result = rpsGameService.getNextMove(userId);
 
         return new RpsGameMovementResponse(GAME_DEFINITIONS.get(result), LocalDateTime.now());
@@ -31,6 +32,7 @@ public class RpsGameController {
 
     @PostMapping("/results")
     public void saveResults(@RequestBody RpsGameResults rpsGameResults){
+        log.info("Post request received: method=saveResults, userId= "+rpsGameResults.getUserId());
         rpsGameService.saveGameResults(rpsGameResults.getUserId(), rpsGameResults.getUserGameMovement(), rpsGameResults.getServerGameMovement());
     }
 
