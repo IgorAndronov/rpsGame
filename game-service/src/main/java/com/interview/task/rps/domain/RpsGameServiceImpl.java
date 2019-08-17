@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.interview.task.rps.domain.GameConstants.*;
+import static java.util.stream.Collectors.toList;
 
 
 @Service
@@ -32,7 +32,7 @@ public class RpsGameServiceImpl implements RpsGameService {
     public Character getNextMove(String userId) {
         List<RpsResults> data = rpsGameRepository.findByKeyUserIdLimitedTo(userId, MAX_AMOUNT_OF_STEPS_TO_UNALIZE);
 
-        return getStepValue(data.stream().map(item -> item.getUserCombination()).collect(Collectors.toList()));
+        return getStepValue(data.stream().map(item -> item.getUserCombination()).collect(toList()));
     }
 
     @Override
@@ -41,7 +41,7 @@ public class RpsGameServiceImpl implements RpsGameService {
         Character serverGameMovementCode = getMovementCode(serverGameMovement);
 
         RpsResults.RpsResultsKey rpsResultsKey = new RpsResults.RpsResultsKey(userId, LocalDateTime.now());
-        RpsResults rpsResults = new RpsResults(rpsResultsKey, userGameMovement, serverGameMovement, getWinner(userGameMovementCode, serverGameMovementCode));
+        RpsResults rpsResults = new RpsResults(rpsResultsKey, userGameMovementCode.toString(), serverGameMovementCode.toString(), getWinner(userGameMovementCode, serverGameMovementCode));
 
         rpsGameRepository.save(rpsResults);
     }
