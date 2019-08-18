@@ -18,7 +18,7 @@ import static java.util.stream.Collectors.toList;
 @Slf4j
 public class RpsGameServiceImpl implements RpsGameService {
 
-    public static final int SEARCH_SEQUENCE_LENGTH = 3;
+    public static final int MAX_SEARCH_SEQUENCE_LENGTH = 3;
     public static final int MIN_AMOUNT_OF_STEPS_TO_UNALIZE = 7;
     public static final int MAX_AMOUNT_OF_STEPS_TO_UNALIZE = 15;
     public static final double PROBABILITY_THRESHOLD = 0.4;
@@ -62,10 +62,10 @@ public class RpsGameServiceImpl implements RpsGameService {
 
         if(userGameMovement.equals(serverGameMovement)){
             return DRAW;
-        };
+        }
         if(serverGameMovement.equals(WIN_COMBINATIONS.get(userGameMovement))){
             return SERVER_WON;
-        };
+        }
 
         return USER_WON;
     }
@@ -76,7 +76,7 @@ public class RpsGameServiceImpl implements RpsGameService {
         if(data.size()> MIN_AMOUNT_OF_STEPS_TO_UNALIZE){
             String dataString = String.join("", data);
 
-            for(int currentSearchSequenceLength = 1; currentSearchSequenceLength<= SEARCH_SEQUENCE_LENGTH; currentSearchSequenceLength++){
+            for(int currentSearchSequenceLength = 1; currentSearchSequenceLength<= MAX_SEARCH_SEQUENCE_LENGTH; currentSearchSequenceLength++){
                 Character result = tryToGuessWithProbability(dataString,currentSearchSequenceLength);
                 if(!result.equals(NOT_FOUND)){
                     return result;
@@ -108,7 +108,7 @@ public class RpsGameServiceImpl implements RpsGameService {
         Map<Character, Integer> result = new HashMap<>();
         data.stream().forEach(item -> {
             Character character = item.charAt(0);
-            if(result.get(character)==null){
+            if(!result.containsKey(character)){
                 result.put(character, 1);
             }else{
                 result.put(character, result.get(character)+1);
