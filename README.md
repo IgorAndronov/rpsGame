@@ -71,7 +71,9 @@ docker exec -ti cas1 nodetool status
 6. start RpsGameApplication 
       ./game-service>mvn spring-boot:run
 7. start RpsStatsApplication 
-      ./statistics-service>mvn spring-boot:run       
+      ./statistics-service>mvn spring-boot:run
+
+Note: during start of RpsGameApplication and RpsStatsApplication you can face the error in the log saying that connection to one of the Cassandra nodes cannot be established. It is because of only one node is exposed from docker container outside . To expose another node outside, the port forwarding setup on docker and ip mapping on the host OS should be done. So it is pure infrastructure setup tasks and goes apart from services development. 
 
 ##Use
 Use the following links that are proxied via zuul gateway:
